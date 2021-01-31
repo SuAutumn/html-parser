@@ -1,9 +1,11 @@
-class HtmlParser {
+export default class HtmlParser {
   /**
-   * @param html {string}
+   * @param html {string, undefined}
    */
   constructor (html) {
-    this.setHtml(html)
+    if (html) {
+      this.setHtml(html)
+    }
     this.node = null // 子node
     this.parentNodeStack = [] // 父node
     this.text = '' // current text
@@ -77,7 +79,7 @@ class HtmlParser {
 
   handleBeforeOpenAttributeName (c) {
     // <div class="..." style="...">
-    if (HtmlParser.isAlphaChar(c)) {
+    if (HtmlParser.isAlphaChar(c) || c === '@') {
       this.status = State.OpeningAttributeName
     } else if (HtmlParser.isWhiteSpace(c)) {
       // ignore
@@ -91,7 +93,8 @@ class HtmlParser {
   }
 
   handleOpeningAttributeName (c) {
-    if (HtmlParser.isAlphaChar(c)) {
+    // v-model="..."
+    if (HtmlParser.isAlphaChar(c) || c === '-' || c === '@') {
       // 记录字符
       this.setTextByChar(c)
     } else if (HtmlParser.isWhiteSpace(c) || c === '=') {
@@ -192,7 +195,7 @@ class HtmlParser {
           this.parentNodeStack.pop()
           this.node.setEnd(this.offset, this.html)
           if (this.parentNodeStack.length === 0) {
-            this.tree.push(node)
+            this.tree.push(this.node)
           }
           this.node = null
         }
@@ -307,9 +310,9 @@ class HtmlParser {
         this.handleText(c)
       }
       this.offset++
+      console.log(this.parentNodeStack)
     }
-    console.log(JSON.stringify(this.tree))
-    console.log(this.text)
+    return this.tree
   }
 
   resetText () {
@@ -478,4 +481,7 @@ const text = `
 </html>
 123
 `
-new HtmlParser(text).exec()
+// new HtmlParser(text).exec()
+
+
+
