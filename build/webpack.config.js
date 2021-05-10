@@ -1,5 +1,6 @@
 const path = require('path')
-const VERSION = require('./util').VERSION
+const webpack = require('webpack')
+const { VERSION, banner, MyBannerPlugin } = require('./util')
 
 module.exports = {
   mode: 'development',
@@ -20,7 +21,8 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
-    rules: [{ test: /\.tsx?$/, use: 'ts-loader' }],
+    rules: [{ test: /\.tsx?$/, use: ['babel-loader', 'ts-loader'] }],
   },
   devtool: false,
+  plugins: [new MyBannerPlugin(banner)],
 }
