@@ -1,16 +1,16 @@
 const path = require('path')
+const VERSION = require('./util').VERSION
 
 module.exports = {
   mode: 'development',
   target: 'node',
   entry: './src/HtmlParser.ts',
   output: {
-    path: path.resolve(__dirname, 'bundle'),
-    filename: 'htmlparser.bundle.js',
-    libraryTarget: 'umd',
+    path: path.resolve(__dirname, '../dist'),
+    filename: `htmlparser.bundle.${VERSION}.js`,
     library: {
       name: 'HtmlParser',
-      type: 'assign-properties',
+      type: 'umd',
       export: 'default',
     },
     globalObject: 'this',
