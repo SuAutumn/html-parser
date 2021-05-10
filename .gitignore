@@ -6,6 +6,7 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 dist/
+coverage/
 
 # Other files and folders
 .settings/
