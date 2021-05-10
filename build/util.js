@@ -11,6 +11,11 @@ exports.banner = `/**
  * @repository ${PACKAGE.repository}
  */`
 
+ /**
+  * 自定义BannerPlugin插件
+  * 实现添加comment在打包好的文件的顶部
+  * 官方BannerPugin是生成LICENSE.txt文件，不符合需求
+  */
 exports.MyBannerPlugin = class MyBannerPlugin {
   constructor(banner) {
     this.banner = banner
@@ -22,7 +27,7 @@ exports.MyBannerPlugin = class MyBannerPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: this._name,
-          stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER,
+          stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER, // 执行时机
         },
         () => {
           for (const chunk of compilation.chunks) {
